@@ -240,8 +240,22 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public Iterator<E> inorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		java.util.ArrayList<E> list = new java.util.ArrayList<>();
+		inorderTraversal(root, list);
+		int[] index = new int[]{0};
+		
+		return new Iterator<E>() {
+			
+			@Override
+			public boolean hasNext() {
+				return index[0] < list.size();
+			}
+			
+			@Override
+			public E next() {
+				return list.get(index[0]++);
+			}
+		};
 	}
 	
 	// Recursively traverses the tree in-order (left → node → right),
