@@ -7,6 +7,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	private static final long serialVersionUID = 1L;
 	private BSTreeNode<E> root;
 	private int size;
+	
 
 	/**
 	 * Returns the root of the Binary Search Tree.
@@ -238,8 +239,33 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public Iterator<E> inorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		java.util.ArrayList<E> list = new java.util.ArrayList<>();
+		inorderTraversal(root, list);
+		int[] index = new int[]{0};
+		
+		return new Iterator<E>() {
+			
+			@Override
+			public boolean hasNext() {
+				return index[0] < list.size();
+			}
+			
+			@Override
+			public E next() {
+				return list.get(index[0]++);
+			}
+		};
+	}
+	
+	// Recursively traverses the tree in-order (left → node → right),
+	// adding each element to the list.
+	private void inorderTraversal(BSTreeNode<E> current, java.util.ArrayList<E> list) {
+		if ( current == null ) {
+			return;
+		} 
+		inorderTraversal(current.getLeft(), list);
+		list.add(current.getElement());
+		inorderTraversal(current.getRight(), list);
 	}
 
 	/**
@@ -250,8 +276,33 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public Iterator<E> preorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		java.util.ArrayList<E> list = new java.util.ArrayList<>();
+		preorderTraversal(root, list);
+		int[] index = new int[]{0};
+		
+		return new Iterator<E>() {
+			
+			@Override
+			public boolean hasNext() {
+				return index[0] < list.size();
+			}
+			
+			@Override
+			public E next() {
+				return list.get(index[0]++);
+			}
+		};
+	}
+	
+	// Recursively traverses the tree in pre-order (node → left → right),
+	// adding each element to the list.
+	private void preorderTraversal(BSTreeNode<E> current, java.util.ArrayList<E> list) {
+		if ( current == null ) {
+			return;
+		} 
+		list.add(current.getElement());
+		preorderTraversal(current.getLeft(), list);
+		preorderTraversal(current.getRight(), list);
 	}
 
 	/**
@@ -262,8 +313,33 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public Iterator<E> postorderIterator() {
-		// TODO Auto-generated method stub
-		return null;
+		java.util.ArrayList<E> list = new java.util.ArrayList<>();
+		postorderTraversal(root, list);
+		int[] index = new int[]{0};
+		
+		return new Iterator<E>() {
+			
+			@Override
+			public boolean hasNext() {
+				return index[0] < list.size();
+			}
+			
+			@Override
+			public E next() {
+				return list.get(index[0]++);
+			}
+		};
+	}
+	
+	// Recursively traverses the tree in post-order (left → right → node),
+	// adding each element to the list.
+	private void postorderTraversal(BSTreeNode<E> current, java.util.ArrayList<E> list) {
+		if ( current == null ) {
+			return;
+		} 
+		postorderTraversal(current.getLeft(), list);
+		postorderTraversal(current.getRight(), list);
+		list.add(current.getElement());
 	}
 
 }
