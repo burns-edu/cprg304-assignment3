@@ -86,8 +86,11 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public BSTreeNode<E> search(E entry) throws NullPointerException {
-		// TODO Auto-generated method stub
-		return null;
+		if ( entry == null ) {
+			throw new NullPointerException();
+		}
+		
+		return searchRecursive(root, entry);
 	}
 	
 	// Recursively searches for entry in the subtree rooted at current. 
