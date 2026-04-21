@@ -109,6 +109,8 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 		return true;
 	}
 	
+	// Recursively finds the correct position and inserts newEntry into the subtree
+	// rooted at current. Returns the updated subtree root.
 	private BSTreeNode<E> addRecursive(BSTreeNode<E> current, E newEntry) {
 		if ( current == null ) {
 			return new BSTreeNode<>(newEntry);
