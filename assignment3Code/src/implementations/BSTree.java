@@ -5,6 +5,8 @@ import utilities.Iterator;
 
 public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	private static final long serialVersionUID = 1L;
+	private BSTreeNode<E> root;
+	private int size;
 
 	/**
 	 * Returns the root of the Binary Search Tree.
@@ -14,8 +16,11 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public BSTreeNode<E> getRoot() throws NullPointerException {
-		// TODO Auto-generated method stub
-		return null;
+		if (isEmpty()) {
+			throw new NullPointerException();
+		} else {
+			return root;
+		}
 	}
 
 	/**
@@ -36,8 +41,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	/**
@@ -47,8 +51,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return root == null;
 	}
 
 	/**
@@ -56,8 +59,8 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		root = null;
+		size = 0;
 	}
 
 	/**
@@ -97,8 +100,27 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public boolean add(E newEntry) throws NullPointerException {
-		// TODO Auto-generated method stub
-		return false;
+		if ( newEntry == null ) {
+			throw new NullPointerException();
+		}
+		
+		root = addRecursive(root, newEntry);
+		size++;
+		return true;
+	}
+	
+	private BSTreeNode<E> addRecursive(BSTreeNode<E> current, E newEntry) {
+		if ( current == null ) {
+			return new BSTreeNode<>(newEntry);
+		} 
+		
+		if ( newEntry.compareTo(current.getElement()) < 0 ) {
+			current.setLeft(addRecursive(current.getLeft(), newEntry));
+		} else if ( newEntry.compareTo(current.getElement()) > 0 ) {
+			current.setRight(addRecursive(current.getRight(), newEntry));
+		}
+		
+		return current;
 	}
 
 	/**
