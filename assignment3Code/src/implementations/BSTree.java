@@ -1,5 +1,6 @@
 package implementations;
 
+import java.util.ArrayList;
 import utilities.BSTreeADT;
 import utilities.Iterator;
 
@@ -7,6 +8,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	private static final long serialVersionUID = 1L;
 	private BSTreeNode<E> root;
 	private int size;
+	
 
 	/**
 	 * Returns the root of the Binary Search Tree.
@@ -240,6 +242,17 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	public Iterator<E> inorderIterator() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	// Recursively traverses the tree in-order (left → node → right),
+	// adding each element to the list.
+	private void inorderTraversal(BSTreeNode<E> current, java.util.ArrayList<E> list) {
+		if ( current == null ) {
+			return;
+		} 
+		inorderTraversal(current.getLeft(), list);
+		list.add(current.getElement());
+		inorderTraversal(current.getRight(), list);
 	}
 
 	/**
