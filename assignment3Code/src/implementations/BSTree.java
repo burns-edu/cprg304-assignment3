@@ -16,8 +16,11 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public BSTreeNode<E> getRoot() throws NullPointerException {
-		// TODO Auto-generated method stub
-		return null;
+		if (isEmpty()) {
+			throw new NullPointerException();
+		} else {
+			return root;
+		}
 	}
 
 	/**
@@ -56,8 +59,8 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		root = null;
+		size = 0;
 	}
 
 	/**
