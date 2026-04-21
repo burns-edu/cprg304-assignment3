@@ -165,8 +165,33 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public BSTreeNode<E> removeMin() {
-		// TODO Auto-generated method stub
-		return null;
+		if ( size == 0) {
+			return null;
+		} else {
+			BSTreeNode<E> min = root;
+			while (min.getLeft() != null) {
+				min = min.getLeft();
+			}
+			
+		root = removeMinRecursive(root);
+		size--;
+		return min;
+		}
+	}
+	
+	/// Recursively finds and removes the leftmost node in the subtree rooted at current.
+	// If the minimum node has a right child, that child takes its place.
+	private BSTreeNode<E> removeMinRecursive(BSTreeNode<E> current) {
+		if ( current == null ) {
+			return null;
+		} 
+		
+		if ( current.getLeft() == null ) {
+			return current.getRight();
+		} else {
+			current.setLeft(removeMinRecursive(current.getLeft()));
+			return current;
+		}
 	}
 	
 	/**
