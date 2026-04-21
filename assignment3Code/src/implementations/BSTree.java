@@ -179,7 +179,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 		}
 	}
 	
-	/// Recursively finds and removes the leftmost node in the subtree rooted at current.
+	// Recursively finds and removes the leftmost node in the subtree rooted at current.
 	// If the minimum node has a right child, that child takes its place.
 	private BSTreeNode<E> removeMinRecursive(BSTreeNode<E> current) {
 		if ( current == null ) {
@@ -202,8 +202,33 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public BSTreeNode<E> removeMax() {
-		// TODO Auto-generated method stub
-		return null;
+		if ( size == 0 ) {
+			return null;
+		} else {
+			BSTreeNode<E> max = root;
+			while (max.getRight() != null) {
+				max = max.getRight();
+			}
+			
+		root = removeMaxRecursive(root);
+		size--;
+		return max;
+		}
+	}
+	
+	// Recursively finds and removes the rightmost node in the subtree rooted at current.
+	// If the maximum node has a left child, that child takes its place.
+	private BSTreeNode<E> removeMaxRecursive(BSTreeNode<E> current) {
+		if ( current == null ) {
+			return null;
+		} 
+		
+		if ( current.getRight() == null ) {
+			return current.getLeft();
+		} else {
+			current.setRight(removeMaxRecursive(current.getRight()));
+			return current;
+		}
 	}
 
 	/**
