@@ -89,7 +89,23 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	// Recursively searches for entry in the subtree rooted at current. 
+	// Returns the matching node, or null if not found.
+	private BSTreeNode<E> searchRecursive(BSTreeNode<E> current, E newEntry) {
+		if ( current == null ) {
+			return null;
+		}
+		
+		if ( newEntry.compareTo(current.getElement()) < 0 ) {
+			return searchRecursive(current.getLeft(), newEntry);
+		} else if ( newEntry.compareTo(current.getElement()) > 0 ) {
+			return searchRecursive(current.getRight(), newEntry);
+		} else {
+			return current;
+		}
+	}
+	
 	/**
 	 * Adds a new element to the tree according to the natural ordering established
 	 * by the Comparable implementation.
