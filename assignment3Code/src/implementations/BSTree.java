@@ -100,8 +100,13 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public boolean add(E newEntry) throws NullPointerException {
-		// TODO Auto-generated method stub
-		return false;
+		if ( newEntry == null ) {
+			throw new NullPointerException();
+		}
+		
+		root = addRecursive(root, newEntry);
+		size++;
+		return true;
 	}
 	
 	private BSTreeNode<E> addRecursive(BSTreeNode<E> current, E newEntry) {
