@@ -5,6 +5,8 @@ import utilities.Iterator;
 
 public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	private static final long serialVersionUID = 1L;
+	private BSTreeNode<E> root;
+	private int size;
 
 	/**
 	 * Returns the root of the Binary Search Tree.
@@ -36,8 +38,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	/**
@@ -47,8 +48,7 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		return root == null;
 	}
 
 	/**
