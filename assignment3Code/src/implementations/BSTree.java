@@ -103,6 +103,20 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	private BSTreeNode<E> addRecursive(BSTreeNode<E> current, E newEntry) {
+		if ( current == null ) {
+			return new BSTreeNode<>(newEntry);
+		} 
+		
+		if ( newEntry.compareTo(current.getElement()) < 0 ) {
+			current.setLeft(addRecursive(current.getLeft(), newEntry));
+		} else if ( newEntry.compareTo(current.getElement()) > 0 ) {
+			current.setRight(addRecursive(current.getRight(), newEntry));
+		}
+		
+		return current;
+	}
 
 	/**
 	 * Removes the smallest element in the tree according to the ordering established
