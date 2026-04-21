@@ -73,8 +73,10 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public boolean contains(E entry) throws NullPointerException {
-		// TODO Auto-generated method stub
-		return false;
+		if ( entry == null ) {
+			throw new NullPointerException();
+		}
+		return search(entry) != null;
 	}
 
 	/**
