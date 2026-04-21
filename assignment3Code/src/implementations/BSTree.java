@@ -30,10 +30,21 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	 */
 	@Override
 	public int getHeight() {
-		// TODO Auto-generated method stub
-		return 0;
+		 return getHeightRecursive(root);
 	}
-
+	
+	// Recursively calculates the height of the subtree rooted at current.
+	// Returns 0 for null nodes, otherwise 1 + the height of the taller subtree.
+	private int getHeightRecursive(BSTreeNode<E> current) {
+		if ( current == null ) {
+			return 0;
+		} else {
+			int leftHeight = getHeightRecursive(current.getLeft());
+			int rightHeight = getHeightRecursive(current.getRight());
+			return 1 + Math.max(leftHeight, rightHeight);
+		}
+	}
+	
 	/**
 	 * Counts the number of elements currently stored in the tree and returns the value.
 	 * 
