@@ -42,9 +42,11 @@
 package appDomain;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import implementations.BSTree;
+import implementations.BSTreeNode;
 import utilities.Iterator;
 
 /*
@@ -107,7 +109,10 @@ public class WordTracker {
         
         try {
             File file = new File(inputFile);
+            String fileName = file.getName();
             Scanner scanner = new Scanner(file);
+            
+            int lineNumber = 1;
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -120,8 +125,12 @@ public class WordTracker {
 
                     if (!word.isEmpty()) {
                         tracker.add(word);
+                        BSTreeNode<String> node = tracker.search(word);
+                        node.addLocation(fileName, lineNumber);
                     }
                 }
+                
+                lineNumber++;
             }
 
             scanner.close();
@@ -202,15 +211,39 @@ public class WordTracker {
         while (itr.hasNext()) {
 
             String word = itr.next();
+            BSTreeNode<String> node = tree.search(word);
 
             if (pf) {
-                sb.append(word).append(" : filename data\n");
+            	String files = String.join(", ", node.getLocations().keySet());
+                sb.append("Key: ===" + word + "=== found in files: " + files + "\n");
             }
             else if (pl) {
-                sb.append(word).append(" : line data\n");
+            	sb.append("Key: ===" + word + "===");
+            	
+            	for (String file : node.getLocations().keySet()) {
+            		ArrayList<Integer> lines = node.getLocations().get(file);
+            		String lineNumbers = lines.toString().replace("[", "").replace("]", "");
+            		sb.append(" found in file: " + file + " on lines: " + lineNumbers + ", ");
+            	}
+            	
+            	sb.append("\n");
             }
             else {
-                sb.append(word).append("\n");
+            	sb.append("Key: ===" + word + "===");
+            	
+            	int wordCount = 0;
+            	for (ArrayList<Integer> lines : node.getLocations().values()) {
+            	    wordCount += lines.size();
+            	}
+            	sb.append(" number of entries: " + wordCount + ", ");
+            	
+            	for (String file : node.getLocations().keySet()) {
+            		ArrayList<Integer> lines = node.getLocations().get(file);
+            		String lineNumbers = lines.toString().replace("[", "").replace("]", "");
+            		sb.append(" found in file: " + file + " on lines: " + lineNumbers + ", ");
+            	}
+            	
+            	sb.append("\n");
             }
         }
 
