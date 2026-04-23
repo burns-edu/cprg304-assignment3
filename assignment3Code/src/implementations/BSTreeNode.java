@@ -1,6 +1,8 @@
 package implementations;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Represents a single node in a binary search tree.
@@ -17,13 +19,18 @@ public class BSTreeNode<E> implements Serializable
 	
 	private BSTreeNode<E> left, right;
 	
+	private HashMap<String, ArrayList<Integer>> locations;
+	
 	/**
      * Constructs a node with the given element and no children.
      *
      * @param element the element to store in the node
      */
 	 public BSTreeNode(E element) {
-	        this(element, null, null);
+	        this.element = element;
+			this.left = null;
+			this.right = null;
+			this.locations = new HashMap<>();
 	    }
 
 	/**
@@ -37,6 +44,7 @@ public class BSTreeNode<E> implements Serializable
 		this.element = element;
 		this.left = left;
 		this.right = right;
+		this.locations = new HashMap<>();
 	}
 	
 	/**
@@ -131,6 +139,7 @@ public class BSTreeNode<E> implements Serializable
         int rightCount = (right == null) ? 0 : right.getNumberOfNodes();
         return 1 + leftCount + rightCount;
     }
+    
     /**
      * Returns the height of the subtree rooted at this node.
      *
@@ -155,5 +164,32 @@ public class BSTreeNode<E> implements Serializable
         int rightHeight = getHeight(node.getRight());
 
         return 1 + Math.max(leftHeight, rightHeight);
+    }
+    
+    /**
+     * Adds location information (file name and line number) to the node.
+     *
+     * @param fileName the file name the word is located in
+     * @param lineNumber the line the word is located in within the corresponding file
+     */
+    public void addLocation(String fileName, int lineNumber) {
+        // If file already exists in map, just add the line number
+        if (locations.containsKey(fileName)) {
+            locations.get(fileName).add(lineNumber);
+        } else {
+            // Otherwise create a new entry for this file
+            ArrayList<Integer> lines = new ArrayList<>();
+            lines.add(lineNumber);
+            locations.put(fileName, lines);
+        }
+    }
+    
+    /**
+     * Returns the location information (file names and line numbers) of the word.
+     *
+     * @return the location information of the word
+     */
+    public HashMap<String, ArrayList<Integer>> getLocations() {
+        return locations;
     }
 }
