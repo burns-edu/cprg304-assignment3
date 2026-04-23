@@ -162,7 +162,8 @@ public class WordTracker {
     
     // Load repository.ser
     
-    private static BSTree<String> loadRepository() {
+    @SuppressWarnings("unchecked")
+	private static BSTree<String> loadRepository() {
 
         try {
             ObjectInputStream in =

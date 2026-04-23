@@ -8,6 +8,15 @@ public class BSTree<E extends Comparable<? super E>> implements BSTreeADT<E> {
 	private BSTreeNode<E> root;
 	private int size;
 	
+	public BSTree() {
+		this.root = null;
+		this.size = 0;
+	}
+	
+	public BSTree(E element) {
+		this.root = new BSTreeNode<>(element);
+		this.size = 1;
+	}
 
 	/**
 	 * Returns the root of the Binary Search Tree.
