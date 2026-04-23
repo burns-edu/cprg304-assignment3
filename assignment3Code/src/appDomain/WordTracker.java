@@ -1,44 +1,3 @@
-// package appDomain;
-
-// import java.util.Scanner;
-// import java.io.File;
-// import java.io.FileNotFoundException;
-
-// import implementations.BSTree;
-// import implementations.BSTreeNode;
-
-// public class WordTracker {
-
-// 	public static void main(String[] args) {
-// 		try {
-// 			// Read file
-// 			File file = new File(args[0]);
-// 			String fileName = file.getName();
-// 			Scanner scanner = new Scanner(file);
-// 			int lineCount = 1;
-			
-// 			// Read lines in file
-// 			while (scanner.hasNextLine()) {
-// 				String line = scanner.nextLine();
-//                 String[] words = line.split(" ");
-                
-//                 // Add word and location data to new Node and insert into BSTree
-//                 for (String word : words) {
-//                 	word = word.replaceAll("[^a-zA-Z0-9]", ""); // Remove punctuation from words
-//                 	if (word.isEmpty()) continue; // Skip if word is empty after stripping punctuation
-//                 	BSTreeNode entry = new BSTreeNode(word); // *** Add in file name and line number [new BSTreeNode(word, fileName, lineNum)]***
-//                 	tracker.add(entry);
-//                 }
-//                 lineCount++;
-// 			}
-// 			scanner.close();
-// 		} catch (FileNotFoundException e) {
-//             System.out.println("File not found: " + e.getMessage());
-//         }
-// 	}
-
-// }
-
 package appDomain;
 
 import java.io.*;
@@ -49,42 +8,36 @@ import implementations.BSTree;
 import implementations.BSTreeNode;
 import utilities.Iterator;
 
-/*
- * Member 4
- * Serialization + CLI + Output Reporting
- *
- * Supported arguments:
- * -pf              print words + filenames
- * -pl              print words + line numbers
- * -po              print words only
- * -f<output.txt>   save report to file
- *
- * Example:
- * java appDomain.WordTracker sample.txt -pf
- * java appDomain.WordTracker sample.txt -pl -fresult.txt
+/**
+ * WordTracker reads a text file and tracks the location of each word
+ * using a Binary Search Tree. Results can be printed to the console
+ * or saved to an output file. The BST is persisted between runs via
+ * a serialized repository file.
  */
-
 public class WordTracker {
 
     private static final String REPOSITORY = "repository.ser";
 
+    /**
+     * Entry point for the WordTracker application.
+     * 
+     * @param args command line arguments: {@code <inputfile> [-pf|-pl|-po] [-f<outputfile>]}
+     *             where {@code -pf} prints files, {@code -pl} prints lines,
+     *             {@code -po} prints word count only, and {@code -f} specifies an output file
+     */
     public static void main(String[] args) {
-
-        if (args.length == 0) {
-            System.out.println("Usage: java WordTracker <inputfile> [-pf|-pl|-po] [-foutput.txt]");
-            return;
-        }
-
-        String inputFile = args[0];
-
+    	String inputFile = args[0];
+        String outputFile = null;
         boolean printFile = false;
         boolean printLine = false;
         boolean printOnly = false;
 
-        String outputFile = null;
-
-        
-        // Read command line options
+	     // Parse command line flags: -pf (print file), -pl (print line),
+	     // -po (print only), -f<filename> (output file)
+        if (args.length == 0) {
+            System.out.println("Usage: java WordTracker <inputfile> [-pf|-pl|-po] [-foutput.txt]");
+            return;
+        }
         
         for (int i = 1; i < args.length; i++) {
 
@@ -99,14 +52,9 @@ public class WordTracker {
             }
         }
 
-        
-        // Load saved BST if exists
-        
         BSTree<String> tracker = loadRepository();
 
-        
         // Read input text file
-        
         try {
             File file = new File(inputFile);
             String fileName = file.getName();
@@ -140,9 +88,7 @@ public class WordTracker {
             return;
         }
 
-        
         // Build report using inorder iterator
-        
         String report = buildReport(tracker, printFile, printLine, printOnly);
 
         // print screen
@@ -153,15 +99,16 @@ public class WordTracker {
             saveOutput(outputFile, report);
         }
 
-        
         // Save BST to repository.ser
-        
         saveRepository(tracker);
     }
 
     
-    // Load repository.ser
-    
+    /**
+     * Loads the persisted BST from repository.ser if it exists.
+     * 
+     * @return the deserialized BSTree, or a new empty BSTree if none is found
+     */
     @SuppressWarnings("unchecked")
 	private static BSTree<String> loadRepository() {
 
@@ -180,9 +127,11 @@ public class WordTracker {
         }
     }
 
-    
-    // Save repository.ser
-    
+    /**
+     * Serializes the BST to repository.ser for persistence between runs.
+     * 
+     * @param tree the BSTree to save
+     */
     private static void saveRepository(BSTree<String> tree) {
 
         try {
@@ -197,9 +146,15 @@ public class WordTracker {
         }
     }
 
-  
-    // Build report using inorderIterator()
-   
+    /**
+     * Builds a formatted word tracking report using an in-order traversal of the tree.
+     * 
+     * @param tree the BSTree containing tracked words
+     * @param pf   if true, report includes the files each word was found in
+     * @param pl   if true, report includes the line numbers for each word
+     * @param po   if true, report includes only the word count per entry
+     * @return the formatted report as a String
+     */
     private static String buildReport(BSTree<String> tree,
                                       boolean pf,
                                       boolean pl,
@@ -252,8 +207,12 @@ public class WordTracker {
     }
 
     
-    // Save report text file
-    
+    /**
+     * Writes the report string to the specified output file.
+     * 
+     * @param fileName the path of the file to write to
+     * @param report   the report content to save
+     */
     private static void saveOutput(String fileName, String report) {
 
         try {
